@@ -1,6 +1,0 @@
-#max
-max=$1
-
-wc -l $CLUSTER_SCRATCH/input/input$max.txt
-wc -l $CLUSTER_SCRATCH/output/max$max.txt
-wc -l $CLUSTER_SCRATCH/skipped/max$max.txt

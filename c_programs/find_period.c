@@ -90,20 +90,21 @@ int main (int argc, char *argv[]) {
 
   // input validation
   int i, j, k, max;
-  if (argc == 5) {
+  unsigned long cachesize;
+  if (argc == 6) {
     i = atoi(argv[1]);
     j = atoi(argv[2]);
     k = atoi(argv[3]);
     max = atoi(argv[4]);
+    cachesize = atoi(argv[5]);
   }
-  if (argc != 5) {
-    printf("Please enter three integer values and a maximum when running this program.\n");
-    return 0;
+  if (argc != 6) {
+    fprintf(stderr, "Please enter three integer values, a maximum, and a cachesize when running this program.\n");
+    return 1;
   }
   // end input validation
 
   // initialization
-  unsigned long cachesize = max * max;   // just a guess
   short* g = malloc(sizeof(short)*cachesize);
   unsigned long* overlap = malloc(sizeof(unsigned long)*cachesize);
   short subtraction_set[4] = {i, j, k, 1};
