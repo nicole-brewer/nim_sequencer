@@ -10,25 +10,27 @@ from setuptools import setup
 
 version = re.search(
     '^__version__\s*=\s*"(.*)"',
-    open('bootstrap/bootstrap.py').read(),
+    open('nim/nim.py').read(),
     re.M
     ).group(1)
 
 
-with open("README.rst", "rb") as f:
+with open("README.md", "rb") as f:
     long_descr = f.read().decode("utf-8")
 
 
 setup(
-    name = "cmdline-bootstrap",
-    packages = ["bootstrap"],
+    name = "nim_sequencer",
+    packages = ["nim"],
     entry_points = {
-        "console_scripts": ['bootstrap = bootstrap.bootstrap:main']
+        "console_scripts": ['nim = nim.nim:main']
         },
     version = version,
-    description = "Python command line application bare bones template.",
+    description = "Command line tool for calculating periodicity in nim sequences."
     long_description = long_descr,
-    author = "Jan-Philip Gehrcke",
-    author_email = "jgehrcke@googlemail.com",
-    url = "http://gehrcke.de/2014/02/distributing-a-python-command-line-application",
-    )
+    author = "Nicole Brewer",
+    author_email = "brewer36@purdue.edu",
+    url = "https://github.com/nicole-brewer/nim_sequencer",
+    packages=setuptools.find_packages(),
+    # classifiers=(), classifiers can be found at pypi.org/classifiers
+)
