@@ -8,34 +8,28 @@ __version__ = "0.2.0"
 
 
 import sys
-import argparse
-from .stuff import Stuff
+import os
+import argparse 
+from commands.command import Command
 
+		
 
+			
 def main():
 
-    #print("Executing nim version %s." % __version__)
-    #print("List of argument strings: %s" % sys.argv[1:])
-    #print("Stuff and Boo():\n%s\n%s" % (Stuff, Boo()))
-    FUNCTION_MAP = {'period' : period }  
-    parser = argparse.ArgumentParser(description='Calculate periodicity in nim sequences')
-    parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version='version ' + __version__))  
-    # list(FUNCTION_MAP) is a list of the keys
-    parser.add_argument('command', choices=list(FUNCTION_MAP)) 
-    args = parser.parse_args()
- 
-    func = FUNCTION_MAP[args.command]
-    func()    
-    #args.run(args)
+	
+	base_path = os.path.dirname(os.path.realpath(__file__))
 
-def period():
-    print("period")
 
-#usage: git [--version] [--help] [-c name=value]
-#           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
-#           [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]
-#           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
-#           <command> [<args>]
+	# COUNT
+	count_parser = argparse.ArgumentParser( description="counts lines in data files")
+	count_parser.add_argument('maximum', type=int, help='the largest element of the subtraction set')
 
-class Boo(Stuff):
-    pass
+	commands = {}
+	commands['count'] = Command('count', count_parser, 'count.sh')	
+	
+	parser = argparse.ArgumentParser( description='Calculate periodicity in nim sequenes', usage='nim [--version] <command> [<args>]\n\n' + 'Nim commands are:\n\t\t\n\tcount\tcounts lines for a maximum in the data documents''')
+	parser.add_argument('command', choices=commands.keys())
+	parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version='version ' + __version__)) 	
+	args = vars(parser.parse_args(sys.argv[1:2])).values()
+	commands.get(args[0]).run(sys.argv[2:])
