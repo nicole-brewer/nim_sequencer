@@ -1,3 +1,2 @@
-# for installation verification??
 
-name = "nim_sequencer"
+from nim_sequencer.config import *
