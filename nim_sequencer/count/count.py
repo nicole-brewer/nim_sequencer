@@ -1,11 +1,14 @@
+# other
 import argparse
 import os
-from nim_sequencer.command import Command
 from scipy.special import comb
-import nim_sequencer as ns
-from nim_sequencer.commands.count.wc import wc
-import nim_sequencer.helpers
- 
+# nim_sequencer
+import nim_sequencer as nim
+from nim_sequencer.command import Command
+from nim_sequencer.helpers import get_data_files
+# nim_sequencer.count
+from nim_sequencer.count.wc import wc
+
 class Count(Command):
 	
 	def __init__(self):
@@ -20,7 +23,7 @@ class Count(Command):
 			args = self.parser.parse_args(args)
 
 		print("|-------- Count Lines: max %s --------|" % args.maximum)
-		files = nim_sequencer.helpers.get_data_files(args.maximum)
+		files = get_data_files(args.maximum)
 		print("    Input:\n          actual:   %s\n          expected: %s" % (wc(files[0]), comb(args.maximum - 1, 3, exact=True)))
 		out = wc(files[1])
 		skip = wc(files[2])
