@@ -15,8 +15,10 @@ class Command(object):
 		# Finally we convert all the values in the list to strings, because
 		# thats what subprocess.Popen requires 
 		temp = (vars(self.parser.parse_args(args))).values()
+		args = []
 		for item in temp:
-			args.append(str(item))
+			if item is not None:
+				args.append(str(item))
 		return args
 
 	# can be used to start a process
@@ -38,4 +40,4 @@ class Command(object):
 		if background:
 			subprocess.Popen(args, executable=exe, cwd=cwd, preexec_fn=os.setpgrp)
 		else:
-			return subprocess.check_output(args, executable=exe, cwd=cwd, stdout=PIPE, universal_newlines=True)
+			return subprocess.check_output(args, executable=exe, cwd=cwd)

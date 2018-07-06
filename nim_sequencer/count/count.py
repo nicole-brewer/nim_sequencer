@@ -7,12 +7,12 @@ import nim_sequencer as nim
 from nim_sequencer.command import Command
 from nim_sequencer.helpers import get_data_files
 # nim_sequencer.count
-from nim_sequencer.count.wc import wc
+from nim_sequencer.wc import wc
 
 class Count(Command):
 	
 	def __init__(self):
-		parser = argparse.ArgumentParser( description="counts lines in data files")
+		parser = argparse.ArgumentParser(prog='nim count', description="counts lines in data files")
 		parser.add_argument('maximum', type=int, help='the largest element of the subtraction set')
 		exe = 'count.sh'
 		path = os.path.dirname(os.path.realpath(__file__))
