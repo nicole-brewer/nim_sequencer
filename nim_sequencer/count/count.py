@@ -5,9 +5,7 @@ from scipy.special import comb
 # nim_sequencer
 import nim_sequencer as nim
 from nim_sequencer.command import Command
-from nim_sequencer.helpers import get_data_files
-# nim_sequencer.count
-from nim_sequencer.wc import wc
+from nim_sequencer.helpers import get_data_files, wc
 
 class Count(Command):
 	
