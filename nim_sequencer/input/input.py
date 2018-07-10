@@ -6,18 +6,14 @@ from scipy.special import comb
 from subprocess import Popen, PIPE, check_output
 from select import select
 # nim_sequencer
-import nim_sequencer as nim
 from nim_sequencer.command import Command
-from nim_sequencer.helpers import count_input
-from nim_sequencer.wc import wc
-from nim_sequencer.valid_walltime import valid_walltime
-from nim_sequencer.expect import expect_in
+from nim_sequencer.helpers import count_input, wc
+
 class Input(Command):
 	
 	def __init__(self):
 		parser = argparse.ArgumentParser(prog='nim input', description="creates and shuffles input data")
 		parser.add_argument('maximum', type=int, help='the largest element of the subtraction set')
-		parser.add_argument('-w', '--walltime', type=valid_walltime, help='walltime format is HH:MM:SS')
 		path = os.path.dirname(os.path.realpath(__file__))
 		Command.__init__(self, parser, path)
 
@@ -50,7 +46,3 @@ class Input(Command):
 		sub_args.append(str(args.maximum))
 		sub_args.append(path)
 		Command.run_exe(self, sub_args, background=True)
-"""
-		if hasattr(args, 'walltime'):
-			walltime = str(sum(x * int(t) for x, t in zip([3600, 60, 1], args.walltime.split(":"))))	
-			pipein = Popen(['timeout', walltime, '-s'], stdout=PIPE, preexec_fun=os.setpgrp, universal_newlines=True)"""

@@ -1,5 +1,3 @@
-
-
-from nim_sequencer import main
+from nim_sequencer.nim import main
 
 main()
