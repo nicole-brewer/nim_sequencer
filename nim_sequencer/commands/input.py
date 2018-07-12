@@ -5,22 +5,30 @@ import os
 from scipy.special import comb
 from subprocess import Popen, PIPE, check_output
 from select import select
+from datetime import timedelta
 # nim_sequencer
 from nim_sequencer.command import Command
 from nim_sequencer.helpers import count_input, wc
+from nim_sequencer.daemon import spawn_subprocess
 
 class Input(Command):
 	
 	def __init__(self):
 		parser = argparse.ArgumentParser(prog='nim input', description="creates and shuffles input data")
 		parser.add_argument('maximum', type=int, help='the largest element of the subtraction set')
-		path = os.path.dirname(os.path.realpath(__file__))
-		Command.__init__(self, parser, path)
+		parser.add_argument('-s', '--seconds', nargs='?', type=int, const=1, default=0, help='the amount of time the program will run in seconds')
+		parser.add_argument('-m', '--minutes', nargs='?', type=int, const=1, default=0, help='the amount of time the program will run in minutes')
+		parser.add_argument('--hours', nargs='?', type=int, const=1, default=0, help='the amount of time the program will run in hours')
+		parser.add_argument('-b', '--background', action='store_true', help = 'spawn a daemon process')
+		Command.__init__(self, parser)
 
 	def run(self, args):
-		
+	
 		error_msg = "nim input: Error: the input file is corrupt\n"
-		args = self.parser.parse_args(args)	
+		args = self.parser.parse_args(args)
+		time = timedelta(seconds=args.seconds, minutes=args.minutes, hours=args.hours)
+		timeout = int(timedelta.total_seconds(time))
+		# if time isn't provided, don't timeout the program
 		actual, expected, path = count_input(args.maximum)
 		sub_args = ['./input3_background.sh']
 
@@ -45,4 +53,7 @@ class Input(Command):
 		# then add the max and the path and start a subprocess in the background
 		sub_args.append(str(args.maximum))
 		sub_args.append(path)
-		Command.run_exe(self, sub_args, background=True)
+		before = wc(path)
+		Command.run(self, sub_args, background=args.background, timeout=timeout)
+		if args.background is not True:
+			print("Lines added: %s" % str(wc(path) - before))

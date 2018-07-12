@@ -12,9 +12,11 @@ class Count(Command):
 	def __init__(self):
 		parser = argparse.ArgumentParser(prog='nim count', description="counts lines in data files")
 		parser.add_argument('maximum', type=int, help='the largest element of the subtraction set')
-		exe = 'count.sh'
-		path = os.path.dirname(os.path.realpath(__file__))
-		Command.__init__(self, parser, path)
+		parser.add_argument('-v', '--verbose', action='store_true', help='count actual and expected lines for both input and output')
+		group = parser.add_argument_group()
+		group.add_argument('-i', '--input', action='store_true', help='print only input lines')
+		group.add_argument('-o', '--output', action='store_true', help='print only output lines')
+		Command.__init__(self, parser)
 
 	def run(self, args, parse=True):
 		if parse:

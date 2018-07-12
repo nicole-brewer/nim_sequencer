@@ -1,4 +1,4 @@
-import nim_sequencer.global_vars
+from nim_sequencer import dir
 from scipy.special import comb
 import os
 
@@ -7,18 +7,18 @@ def get_filename(maximum):
 
 
 def get_input_file(maximum):
-	return os.path.join(nim_sequencer.global_vars.IN, get_filename(maximum))
+	return os.path.join(dir.IN, get_filename(maximum))
 
 def get_output_file(maximum):
-	return os.path.join(nim_sequencer.global_vars.OUT, get_filename(maximum))
+	return os.path.join(dir.OUT, get_filename(maximum))
 
 def get_skipped_file(maximum):
-	return os.path.join(nim_sequencer.global_vars.SKIP, get_filename(maximum))
+	return os.path.join(dir.SKIP, get_filename(maximum))
 
 def get_data_files(maximum):
 
 	files = []
-	for path in nim_sequencer.global_vars.DATA:
+	for path in dir.DATA:
 		files.append(os.path.join(path, 'max' + str(maximum) + '.txt'))
 	
 	return files
@@ -50,8 +50,12 @@ def count_output(maximum):
 	filename = get_output_file(maximum)
 	return wc(filename), expected_output(maximum), filename
 
+def count_skipped(maximum):
+	filename = get_skipped_file(maximum)
+	return wc(filename), filename
+
 def expected_input(maximum):
 	return comb(maximum - 1, 3, exact=True)
 
-def expect_out(maximum):
+def expected_output(maximum):
 	return comb(maximum, 4, exact=True)
