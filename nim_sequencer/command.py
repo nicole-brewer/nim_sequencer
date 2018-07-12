@@ -4,11 +4,10 @@ import os
 
 class Command(object):
 	
-	def __init__(self, parser, path):
+	def __init__(self, parser):
 		self.parser = parser
-		self.path = path
-
-	def parse(self, args):
+		
+	def args_list(self, args):
 
 		# We parse the args, which gives us a Namespace object. We turn that
 		# into a dictionary and then get a list of just the values.
@@ -21,20 +20,14 @@ class Command(object):
 				args.append(str(item))
 		return args
 
-	# can be used to start a process
-	def run_exe(self, args, exe=None, stdin=None, background=False, timeout=0):
-	
-		# dir_path is the directory containing the class file
-		# cwd indicates the directory we want to cd into before execution.
-		cwd = self.path
-	
-		# exe is the location of the executable
-		if exe is not None:
-			exe = os.path.join(cwd, exe)
+	def run(self, args, background=True, timeout=None):
 
-		# puts the child in it's own process group so the program will
-		# continue without waiting for the child to terminate
+		if timeout is not None and timeout != 0:
+			temp = ['timeout', str(timeout)]
+			temp.extend(args)
+			args = temp
+	
 		if background:
-			subprocess.Popen(args, executable=exe, cwd=cwd, preexec_fn=os.setpgrp, universal_newlines=False)
+			nim_sequencer.daemon.spawn_subprocess(args)
 		else:
-			return subprocess.check_output(args, executable=exe, cwd=cwd)
+			subprocess.call(args, cwd=nim_sequencer.dir.BIN, universal_newlines=True)
