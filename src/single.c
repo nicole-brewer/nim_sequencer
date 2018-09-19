@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define PRINT 1 
-#define ITERATIONS 10
+#define ITERATIONS 5
+
 int g_of_x (int n, short* g_values) {
 
   int i, j, temp;
@@ -15,7 +15,6 @@ int g_of_x (int n, short* g_values) {
       g_values[j] = g_values[j - 1];
       g_values[j - 1] = temp;
       j--;
-
     }
   }
   int ret = 0;
@@ -74,16 +73,6 @@ unsigned long findPeriod (short* g, unsigned long cachesize, short* subtraction_
       index++;
     }
 
-    //PRINT: prints g values
-    if (PRINT && index % cachesize == 0 ){
-      unsigned long k;
-      printf("\n");
-      for (k = 0; k < cachesize; k++) {
-        printf("%d", g[k]);
-      }
-      printf("\n");
-    } //END PRINT
-
     tempPeriod = kmp(g, overlap, cachesize);
     if (tempPeriod >= subtraction_set[3]) {
       break; //period found
@@ -91,7 +80,7 @@ unsigned long findPeriod (short* g, unsigned long cachesize, short* subtraction_
     iter++;  // while loop iterate
   }
   if (iter == ITERATIONS) {
-    printf("Period not found\n");
+    fprintf(stderr, "%d %d %d %d\n", subtraction_set[0], subtraction_set[1], subtraction_set[2], subtraction_set[3]);
     return 0;
   }
   return (cachesize - tempPeriod);
@@ -100,28 +89,31 @@ unsigned long findPeriod (short* g, unsigned long cachesize, short* subtraction_
 int main (int argc, char *argv[]) {
 
   // input validation
-  int i, j, k, l;
-  if (argc == 5) {
+  int i, j, k, l, max;
+  unsigned long cachesize;
+  if (argc == 7) {
     i = atoi(argv[1]);
     j = atoi(argv[2]);
     k = atoi(argv[3]);
-    l = atoi(argv[4]);
+	l = atoi(argv[4]);
+    max = atoi(argv[5]);
+    cachesize = atoi(argv[6]);
   }
-  if (argc != 5) {
-    printf("Please enter four integer values when running this program.\n");
-    return 0;
+  if (argc != 7) {
+    fprintf(stderr, "Please enter three integer values, a maximum, and a cachesize when running this program.\n");
+    return 1;
   }
   // end input validation
 
   // initialization
-  unsigned long cachesize = l * l;   // just a guess
   short* g = malloc(sizeof(short)*cachesize);
   unsigned long* overlap = malloc(sizeof(unsigned long)*cachesize);
   short subtraction_set[4] = {i, j, k, l};
   unsigned long period;
   // end initialization
-  
-    period = findPeriod(g, cachesize, subtraction_set, overlap);
+
+  period = findPeriod(g, cachesize, subtraction_set, overlap);
+  if (period != 0) {
     printf("%hu %hu %hu %hu %lu\n", i, j, k, l, period);
-    return 0;
+  }
 }

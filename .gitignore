@@ -2,6 +2,6 @@
 data
 subs
 *.o
-bin/*
+bin
 input_gen
 output_get

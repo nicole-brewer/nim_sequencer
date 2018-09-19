@@ -50,8 +50,12 @@ def count_output(maximum):
 	filename = get_output_file(maximum)
 	return wc(filename), expected_output(maximum), filename
 
+def count_skipped(maximum):
+	filename = get_skipped_file(maximum)
+	return wc(filename), filename
+
 def expected_input(maximum):
 	return comb(maximum - 1, 3, exact=True)
 
-def expect_out(maximum):
+def expected_output(maximum):
 	return comb(maximum, 4, exact=True)
