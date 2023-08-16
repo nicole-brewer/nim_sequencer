@@ -1,7 +1,7 @@
 # nim_sequencer
 
-My first undergraduate research project in which I implemented the KMP string matching algorithm to create a large data set for a combinatorial 
-game theory problem. This was my first experience using HPC resources. The problem was trivially parallel, but not all of the threads were guarenteed to find
+My first undergraduate research project in which I implemented the KMP string matching algorithm to create a large data set for a [combinatorial 
+game theory problem](https://web.mit.edu/sp.268/www/nim.pdf). This was my first experience using HPC resources. The problem was trivially parallel, but not all of the threads were guarenteed to find
 a solution given and would have to be run again. Manually taking care of this on every run became cumbersome, and the bulk of the project quickly became about
 writing a command line interface that made file management and cluster submission much more maintainable. 
 
